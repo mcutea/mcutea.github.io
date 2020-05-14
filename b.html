@@ -57,7 +57,7 @@
 				eventRender: function(info) {
 					color = [];
 					if (info.event.end < today) color = ['lightgray','transparent'];
-					else if(info.event.title == '課外活動組') color = ['#575fcf','#575fcf'];
+					else if(info.event.title == '課外組') color = ['#575fcf','#575fcf'];
 					if(color.length == 2) {
 						if(info.el.classList.contains('fc-day-grid-event')) {
 							info.el.style.backgroundColor = color[0];
