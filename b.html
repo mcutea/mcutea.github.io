@@ -48,20 +48,23 @@
 					d2 = info.event.end;
 					text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate();
 					if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate();
-					text += '</h2><p style="line-height:20px">' +(info.event._def.extendedProps.item).replace(/\,/g,'<br>')+'</p>';
+					text += '</h2><p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>')+'</p>';
 					
 					document.getElementById('event_detail').style.display = 'block';
 					document.getElementById('event_detail_data').innerHTML = text;
 				},
 				navLinks: false,
 				eventRender: function(info) {
-					if (info.event.end < today) {
+					color = [];
+					if (info.event.end < today) color = ['lightgray','transparent'];
+					else if(info.event.title == '課外活動組') color = ['#575fcf','#575fcf'];
+					if(color.length == 2) {
 						if(info.el.classList.contains('fc-day-grid-event')) {
-							info.el.style.backgroundColor = 'lightgray';
-							info.el.style.borderColor = 'lightgray';
+							info.el.style.backgroundColor = color[0];
+							info.el.style.borderColor = color[0];
+						} else if (info.el.getElementsByClassName('fc-event-dot')[0]) {
+							info.el.getElementsByClassName('fc-event-dot')[0].style.backgroundColor = color[1];
 						}
-						var dotEl = info.el.getElementsByClassName('fc-event-dot')[0];
-						if (dotEl) dotEl.style.backgroundColor = 'transparent';
 					}
 				},
 				eventSourceSuccess: function(content, xhr) {
