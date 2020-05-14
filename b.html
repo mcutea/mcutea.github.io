@@ -1,0 +1,129 @@
+<title>明志課外組器材借用行事曆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8' />
+	<link href='./packages/core/main.css' rel='stylesheet' />
+	<link href='./packages/daygrid/main.css' rel='stylesheet' />
+	<link href='./packages/timegrid/main.css' rel='stylesheet' />
+	<link href='./packages/list/main.css' rel='stylesheet' />
+	<script src='./packages/core/main.js'></script>
+	<script src='./packages/interaction/main.js'></script>
+	<script src='./packages/daygrid/main.js'></script>
+	<script src='./packages/timegrid/main.js'></script>
+	<script src='./packages/list/main.js'></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			function pad($t) {
+				if($t < 10) return '0'+$t;
+				return $t;
+			}
+			var calendarEl = document.getElementById('calendar');
+			var today = new Date();
+			var d = new Date();
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+				height: 'parent',
+				header: {
+					left: 'today prev,next',
+					center: 'title',
+					right: 'dayGridMonth,listMonth'
+				},
+				noEventsMessage: '本月無人借用器材',
+				buttonText: { today: '本月', month: '月曆', list: '清單'},
+				titleFormat: { month: 'short', year: 'numeric'},
+				defaultView: 'dayGridMonth',
+				navLinks: true,
+				editable: true,
+				eventLimit: true,
+				eventLimitText: "More",
+				displayEventTime: false,
+				listDayFormat: {month: 'numeric', day: 'numeric'},
+				listDayAltFormat: {weekday: 'short'},
+				events: {url: 'https://cors-anywhere.herokuapp.com/http://henrywu.lionfree.net/borrow/data2.json'},
+				validRange: {start: d.getFullYear() +'-'+ pad(d.getMonth()+1) +'-01'},
+				eventClick: function(info) {
+					d1 = info.event.start;
+					d2 = info.event.end;
+					text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate();
+					if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate();
+					text += '</h2><p style="line-height:20px">' +(info.event._def.extendedProps.item).replace(/\,/g,'<br>')+'</p>';
+					
+					document.getElementById('event_detail').style.display = 'block';
+					document.getElementById('event_detail_data').innerHTML = text;
+				},
+				navLinks: false,
+				eventRender: function(info) {
+					if (info.event.end < today) {
+						if(info.el.classList.contains('fc-day-grid-event')) {
+							info.el.style.backgroundColor = 'lightgray';
+							info.el.style.borderColor = 'lightgray';
+						}
+						var dotEl = info.el.getElementsByClassName('fc-event-dot')[0];
+						if (dotEl) dotEl.style.backgroundColor = 'transparent';
+					}
+				},
+				eventSourceSuccess: function(content, xhr) {
+					document.getElementById('loading').style.display = 'none';
+				}
+			});
+			calendar.render();
+		});
+	</script>
+	<style>
+		html, body {
+			overflow: hidden;
+			font-family:"SF Pro TC","SF Pro Text","SF Pro Icons","PingFang TC","Helvetica Neue","Helvetica","Arial","Microsoft JhengHei",wf_SegoeUI,"Segoe UI",Segoe,"Segoe WP",Tahoma,Verdana,Ubuntu,"Bitstream Vera Sans","DejaVu Sans",Tahoma,微軟正黑體,"LiHei Pro","WenQuanYi Micro Hei","Droid Sans Fallback","AR PL UMing TW",Roboto,"Helvetica Neue","Hiragino Maru Gothic ProN",メイリオ,"ヒラギノ丸ゴ ProN W4",Meiryo,"Droid Sans",sans-serif;
+			font-size: 14px;
+		}
+
+		#calendar-container {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+
+		.fc-header-toolbar {
+			padding-top: 1em;
+			padding-left: 1em;
+			padding-right: 1em;
+		}
+
+		.fc-toolbar h2 {
+			font-size: 1.5em;
+		}
+
+		.fc-button {
+			padding: 0.3em 0.4em;
+		}
+
+		.fc-toolbar.fc-header-toolbar {
+			margin-bottom: 1em
+		}
+
+		.fc-ltr .fc-list-item-marker {
+			padding-top: 11px !important
+		}
+
+		.fc-list-item:hover {
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="loading" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:11000;background:#FFF">
+		<div style="text-align:center;font-size:30px;margin-top:45vh">Loading...</div>
+	</div>
+	<div id="event_detail" style="position:fixed;top:0;left:0;width:100%;height:100%;overflow:scroll;box-sizing:border-box;padding:10px;z-index:10000;background:#FFF;display:none">
+		<br><br>
+		<div id="close" style="font-size:40px;cursor:pointer;position:fixed;right:30px;top:0" onclick="document.getElementById('event_detail').style.display = 'none';">&times;</div>
+		<div id="event_detail_data" style="margin:0 auto;width:90%;max-width:500px"></div>
+	</div>
+	<div id="calendar-container">
+		<div id="calendar"></div>
+	</div>
+</body>
+</html>
