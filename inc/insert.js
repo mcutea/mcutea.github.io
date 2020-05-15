@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			if(img != undefined) {
 				document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].onclick = function() {
 					location.href = '#eqipimage';
-					// set image to box
+					document.querySelectorAll('#eqipimage img')[0].src = img;
 				}
 			}
 		}
