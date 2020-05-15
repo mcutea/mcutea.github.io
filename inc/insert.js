@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 					location.href = '#eqipimage';
 					document.querySelectorAll('#eqipimage img')[0].src = imgList[this.parentElement.parentElement.children[0].innerText];
 					if(document.querySelectorAll('#eqipimage img')[0].height > document.querySelectorAll('#eqipimage img')[0].width) {
-						document.querySelectorAll('#eqipimage img')[0].height = '100%';
+						document.querySelectorAll('#eqipimage img')[0].height = '100vh';
 						document.querySelectorAll('#eqipimage img')[0].width = 'auto';
 					}
 					else {
-						document.querySelectorAll('#eqipimage img')[0].width = '100%';
+						document.querySelectorAll('#eqipimage img')[0].width = '100vw';
 						document.querySelectorAll('#eqipimage img')[0].height = 'auto';
 					}
 				}
