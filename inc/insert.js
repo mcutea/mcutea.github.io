@@ -20,11 +20,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				imgele.src = imgList[id];
 				imgele.removeAttribute('width')
 				imgele.removeAttribute('height');
-				if(this.height < this.width) {
-					imgele.width = outele.offsetWidth;
-				} else {
-					imgele.height = outele.offsetHeight;
-				}
+				if(this.height < this.width) imgele.width = outele.offsetWidth;
+				else imgele.height = outele.offsetHeight;
 			}
 			img.src = imgList[id];
 		}
