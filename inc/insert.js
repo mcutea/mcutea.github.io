@@ -9,7 +9,7 @@ var showimg = function(id) {
 	img.onload = function() {
 		imgele = document.querySelectorAll('#eqipimage img')[0];
 		outele = document.querySelectorAll('#eqipimage')[0];
-		mgele.src = imgList[id];
+		imgele.src = imgList[id];
 		imgele.removeAttribute('width')
 		imgele.removeAttribute('height');
 		if(this.height < this.width) imgele.width = outele.offsetWidth;
