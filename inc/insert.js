@@ -9,12 +9,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 		eqipTable = document.querySelectorAll('span[name=table1] tr');
 		for(i = 2; i <= eqipTable.length; i++) {
-			img = imgList[document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[0].innerText.trim()];
-			console.log(img);
-			if(img != undefined) {
+			if(imgList[document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[0].innerText.trim()] != undefined) {
 				document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].onclick = function() {
 					location.href = '#eqipimage';
-					document.querySelectorAll('#eqipimage img')[0].src = img;
+					document.querySelectorAll('#eqipimage img')[0].src = imgList[document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[0].innerText.trim()];
 					if(document.querySelectorAll('#eqipimage')[0].offsetHeight / document.querySelectorAll('#eqipimage img')[0].height < document.querySelectorAll('#eqipimage')[0].offsetWidth / document.querySelectorAll('#eqipimage img')[0].width) document.querySelectorAll('#eqipimage img')[0].height = document.querySelectorAll('#eqipimage')[0].offsetHeight;
 					else document.querySelectorAll('#eqipimage img')[0].width = document.querySelectorAll('#eqipimage')[0].offsetWidth
 				}
