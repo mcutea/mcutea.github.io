@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-	if(typeof loaded !== "undefined") {
+	if(typeof loaded == "undefined") {
 		loaded = true;
 		document.querySelectorAll('body')[0].insertAdjacentHTML('beforeend', '<style>#eqipimage{display:none;background:#FFF;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000}#eqipimage:target{display:block}</style><div id="eqipimage"><a href="#!" id="close" style="font-size:40px;cursor:pointer;position:fixed;right:30px;top:0;text-decoration:none;color:black">&times;</a></div>');
 		imgList = {
