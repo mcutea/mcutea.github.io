@@ -1,3 +1,21 @@
+var showimg = function(id) {
+	location.href ='#eqipimage';
+	document.querySelectorAll('#eqipimage img')[0].src = '';
+	img = new Image();
+	img.onload = function() {
+		imgele = document.querySelectorAll('#eqipimage img')[0];
+		outele = document.querySelectorAll('#eqipimage')[0];
+		imgele.src = imgList[id];
+		imgele.removeAttribute('width')
+		imgele.removeAttribute('height');
+		if(this.height < this.width) {
+			imgele.width = outele.offsetWidth;
+		} else {
+			imgele.height = outele.offsetHeight;
+		}
+	}
+	img.src = imgList[id];
+}
 document.addEventListener("DOMContentLoaded", function(event) {
 	if(typeof loaded == "undefined") {
 		loaded = true;
@@ -9,26 +27,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 		eqipTable = document.querySelectorAll('span[name=table1] tr');
 		var id;
-
-		var showimg = function(id) {
-			location.href ='#eqipimage';
-			document.querySelectorAll('#eqipimage img')[0].src = '';
-			img = new Image();
-			img.onload = function() {
-				imgele = document.querySelectorAll('#eqipimage img')[0];
-				outele = document.querySelectorAll('#eqipimage')[0];
-				imgele.src = imgList[id];
-				imgele.removeAttribute('width')
-				imgele.removeAttribute('height');
-				if(this.height < this.width) {
-					imgele.width = outele.offsetWidth;
-				} else {
-					imgele.height = outele.offsetHeight;
-				}
-			}
-			img.src = imgList[id];
-		}
-		
 		for(var i = 2; i <= eqipTable.length; i++) {
 			id = document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[0].innerText.trim();
 			if(imgList[id] != undefined) {
