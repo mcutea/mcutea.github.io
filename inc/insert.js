@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			"md42": "http://emaker.mcut.edu.tw/servlet/jform?step=2&file=borrow.dat&enc=93d23f3a4b3f005d504d4d5048630e0b080d0a0b0e060d09060a08600e0b0e0c0809080b600e0d0f070e0808060a0d0a0c0a070d0d600e0909080d0f08090b0d605111554f58"
 		}
 		eqipTable = document.querySelectorAll('span[name=table1] tr');
-		for(i = 2; i <= eqipTable.length; i++) {
+		for(var i = 2; i <= eqipTable.length; i++) {
 			if(imgList[document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[0].innerText.trim()] != undefined) {
 				document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].onclick = function() {
 					location.href = '#eqipimage';
