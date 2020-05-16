@@ -4,11 +4,11 @@ var showimg = function(id) {
 	document.querySelectorAll('#eqipimage img')[0].src = '';
 	img = new Image();
 	imgele = document.querySelectorAll('#eqipimage img')[0];
+	imgele.removeAttribute('width')
+	imgele.removeAttribute('height');
 	imgele.src = 'http://emaker.mcut.edu.tw/servlet/jform?step=2&file=borrow.dat&enc='+imgList[id];
 	img.onload = function() {
 		outele = document.querySelectorAll('#eqipimage')[0];
-		imgele.removeAttribute('width')
-		imgele.removeAttribute('height');
 		if(this.height < this.width) imgele.width = outele.offsetWidth;
 		else imgele.height = outele.offsetHeight;
 	}
