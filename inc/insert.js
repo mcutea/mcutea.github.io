@@ -3,10 +3,10 @@ var showimg = function(id) {
 	location.href ='#eqipimage';
 	document.querySelectorAll('#eqipimage img')[0].src = '';
 	img = new Image();
+	imgele = document.querySelectorAll('#eqipimage img')[0];
+	imgele.src = 'http://emaker.mcut.edu.tw/servlet/jform?step=2&file=borrow.dat&enc='+imgList[id];
 	img.onload = function() {
-		imgele = document.querySelectorAll('#eqipimage img')[0];
 		outele = document.querySelectorAll('#eqipimage')[0];
-		imgele.src = 'http://emaker.mcut.edu.tw/servlet/jform?step=2&file=borrow.dat&enc='+imgList[id];
 		imgele.removeAttribute('width')
 		imgele.removeAttribute('height');
 		if(this.height < this.width) imgele.width = outele.offsetWidth;
