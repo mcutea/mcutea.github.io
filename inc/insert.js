@@ -23,8 +23,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		var id;
 		for(var i = 2; i <= eqipTable.length; i++) {
 			id = document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[0].innerText.trim();
-			if(imgList[id] != undefined) {
-				document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].setAttribute('onclick','showimg("'+id+'")');
+			if(imgList[id] != undefined) document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].setAttribute('onclick','showimg("'+id+'")');
+			else {
+				document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].removeAttribute('onclick')
+				document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].removeAttribute('style')
 			}
 		}
 	}
