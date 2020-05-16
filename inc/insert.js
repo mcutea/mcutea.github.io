@@ -9,7 +9,7 @@ var showimg = function(id) {
 	imgele.src = 'http://emaker.mcut.edu.tw/servlet/jform?step=2&file=borrow.dat&enc='+imgList[id];
 	img.onload = function() {
 		outele = document.querySelectorAll('#eqipimage')[0];
-		if(this.height < this.width) imgele.width = outele.offsetWidth;
+		if(this.height > this.width) imgele.width = outele.offsetWidth;
 		else imgele.height = outele.offsetHeight;
 	}
 	img.src = 'http://emaker.mcut.edu.tw/servlet/jform?step=2&file=borrow.dat&enc='+imgList[id];
