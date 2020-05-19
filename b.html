@@ -49,7 +49,7 @@
 					d2 = info.event.end;
 					text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate();
 					if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate();
-					if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 6 && d2.getMonth() == 5 && d2.getDate() == 6)
+					if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 5 && d2.getMonth() == 5 && d2.getDate() == 6)
 						text += '</h2><p style="line-height:20px">音柱 * 2<br>EV * 4<br>Qu-32 * 1<br>ACT-545 * 1<br>導播機 * 1<br>電視 * 1</p>';
 					else text += '</h2><p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>')+'</p>';
 					
