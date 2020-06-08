@@ -13,68 +13,151 @@
 	<script src="inc/borrow_calendar_packages/daygrid/main.js"></script>
 	<script src="inc/borrow_calendar_packages/timegrid/main.js"></script>
 	<script src="inc/borrow_calendar_packages/list/main.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 	<script>
+		var regex_time = /(\d{2}):(\d{2})/;
+		function updateTime() {
+			if(
+				document.getElementById('startTime').value == '' ||
+				document.getElementById('endTime').value == '' ||
+				!regex_time.test(document.getElementById('startTime').value) ||
+				!regex_time.test(document.getElementById('endTime').value)
+			) return alert('請填寫借用及歸還時間。');
+			document.getElementById('send').setAttribute('disabled', 'disabled');
+			var xhr2 = new XMLHttpRequest();
+			xhr2.addEventListener('load', function() {
+				if(this.responseText == 'token_err') alert('Token Error');
+				else alert('儲存成功！\n（重新整理後生效）')
+				document.getElementById('send').removeAttribute('disabled');
+			});
+			xhr2.open('POST', 'https://lab.henrywu.tw/borrow/updateTime.php');
+			xhr2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhr2.send('start='+document.getElementById('startTime').value+'&end='+document.getElementById('endTime').value+'&qd='+document.getElementById('qd').value+'&token='+localStorage.editToken);
+		}
 		document.addEventListener('DOMContentLoaded', function() {
 			location.href = '#!';
 			function pad($t) {
 				if($t < 10) return '0'+$t;
 				return $t;
 			}
+
 			var calendarEl = document.getElementById('calendar');
 			var today = new Date();
 			var d = new Date();
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-				plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-				height: 'parent',
-				header: {
-					left: 'today prev,next',
-					center: 'title',
-					right: 'dayGridMonth,listMonth'
-				},
-				noEventsMessage: '本月無人借用器材',
-				buttonText: { today: '本月', month: '月曆', list: '清單'},
-				titleFormat: { month: 'short', year: 'numeric'},
-				defaultView: 'dayGridMonth',
-				navLinks: true,
-				editable: true,
-				eventLimit: true,
-				eventLimitText: "More",
-				displayEventTime: false,
-				listDayFormat: {month: 'numeric', day: 'numeric'},
-				listDayAltFormat: {weekday: 'short'},
-				events: {url: 'https://lab.henrywu.tw/borrow/api.php'},
-				validRange: {start: d.getFullYear() +'-'+ pad(d.getMonth()+1) +'-01'},
-				eventClick: function(info) {
-					d1 = info.event.start;
-					d2 = info.event.end;
-					text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate();
-					if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate();
-					add = '';
-					if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 5 && d2.getMonth() == 5 && d2.getDate() == 6) add = '音柱 * 2<br>EV * 4<br>Qu-32 * 1<br>導播機 * 1<br>電視 * 1';
-					
-					text += '</h2><p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>')+add+'</p>';
-					location.href = '#event_detail'
-					document.getElementById('event_detail_data').innerHTML = text;
-				},
-				navLinks: false,
-				eventRender: function(info) {
-					color = [];
-					if (info.event.end < today) color = ['lightgray','transparent'];
-					else if(info.event.title == '課外組') color = ['#575fcf','#575fcf'];
-					if(color.length == 2) {
-						if(info.el.classList.contains('fc-day-grid-event')) {
-							info.el.style.backgroundColor = color[0];
-							info.el.style.borderColor = color[0];
-						} else if (info.el.getElementsByClassName('fc-event-dot')[0]) {
-							info.el.getElementsByClassName('fc-event-dot')[0].style.backgroundColor = color[1];
-						}
+			var xhr = new XMLHttpRequest();
+			xhr.addEventListener('load', function() {
+				data = JSON.parse(this.responseText).events;
+				time = JSON.parse(this.responseText).time;
+				maxEndDate = new Date();
+				for (var i=0; i < data.length; i++) {
+					if(new Date(data[i].end) > maxEndDate) maxEndDate = new Date(data[i].end);
+					data[i].qd = data[i].title+'_'+data[i].start+'_'+(data[i].end).split(' ')[0];
+					if(time[data[i].qd]) {
+						timeData = time[data[i].qd];
+						data[i].start = data[i].start + ' ' + timeData[0];
+						data[i].end = (data[i].end).split(' ')[0] + ' ' + timeData[1];
+						data[i].borrowTime = timeData;
 					}
-				},
-				eventSourceSuccess: function(content, xhr) {
-					document.getElementById('loading').style.display = 'none';
 				}
+				var DayofMaxEndDate = [31,28,31,30,31,30,31,31,30,31,30,31];
+				var hasRendered = [];
+				maxEndDateYear = maxEndDate.getFullYear();
+				if((maxEndDateYear%4===0&&maxEndDateYear%100!==0||maxEndDateYear%400===0)) DayofMaxEndDate[1] = 29;
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+					height: 'parent',
+					header: {
+						left: 'today prev,next',
+						center: 'title',
+						right: 'dayGridMonth,listMonth'
+					},
+					noEventsMessage: '本月無人借用器材',
+					buttonText: { today: '本月', month: '月曆', list: '清單'},
+					titleFormat: { month: 'short', year: 'numeric'},
+					defaultView: 'dayGridMonth',
+					navLinks: true,
+					editable: true,
+					eventLimit: true,
+					eventLimitText: "More",
+					displayEventTime: false,
+					eventTimeFormat: {
+						hour: 'numeric',
+						minute: '2-digit',
+						hour12: false
+					},
+					listDayFormat: {month: 'numeric', day: 'numeric'},
+					listDayAltFormat: {weekday: 'short'},
+					events: data,
+					validRange: {
+						start: d.getFullYear() +'-'+ pad(d.getMonth()+1) +'-01',
+						end: maxEndDate.getFullYear() +'-'+ pad(maxEndDate.getMonth()+1) +'-'+ DayofMaxEndDate[maxEndDate.getMonth()] + ' 23:59'
+					},
+					eventClick: function(info) {
+						d1 = info.event.start;
+						d2 = info.event.end;
+						add = '';
+						if(info.event.extendedProps.borrowTime) {
+							text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate() +' '+info.event.extendedProps.borrowTime[0] + ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate() + ' '+ info.event.extendedProps.borrowTime[1];
+						} else {
+							text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate();
+							if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate();
+						}
+
+						text += '</h2>';
+
+						if(localStorage.editToken && d2 >= today) {
+							if(info.event.extendedProps.borrowTime) text += '<div style="background:#EEE;padding:10px 15px;margin:10px 0;border-radius:5px;display:inline-block;">預計於 ' + (d1.getMonth()+1) + '/' + d1.getDate() + ' <input class="input-time" id="startTime" value="'+info.event.extendedProps.borrowTime[0]+'"> 借出，'+ (d2.getMonth()+1) + '/' + d2.getDate()+' <input class="input-time" id="endTime" value="'+info.event.extendedProps.borrowTime[1]+'"> 歸還　<button id="send" onclick="updateTime()">更新</button></div>';
+							else text += '<div style="background:#EEE;padding:10px 15px;margin:10px 0;border-radius:5px;display:inline-block;">預計於 ' + (d1.getMonth()+1) + '/' + d1.getDate() + ' <input class="input-time" id="startTime"> 借出，'+ (d2.getMonth()+1) + '/' + d2.getDate()+' <input class="input-time" id="endTime"> 歸還　<button id="send" onclick="updateTime()">送出</button></div>';
+							text += '<input type="hidden" value="'+info.event.extendedProps.qd+'" id="qd">';
+						}
+
+						if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 5 && d2.getMonth() == 5 && d2.getDate() == 6) add = '音柱 * 2<br>EV * 4<br>Qu-32 * 1<br>導播機 * 1<br>電視 * 1';
+						
+						text += '<p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>')+add+'</p>';
+						location.href = '#event_detail';
+						document.getElementById('event_detail_data').innerHTML = text;
+						if(localStorage.editToken && d2 >= today) {
+							var cleave = new Cleave('#startTime', {
+								time: true,
+								timePattern: ['h', 'm']
+							});
+							var cleave = new Cleave('#endTime', {
+								time: true,
+								timePattern: ['h', 'm']
+							});
+						}
+					},
+					navLinks: false,
+					eventRender: function(info) {
+						console.log()
+						if(info.event.extendedProps.borrowTime) {
+							if(hasRendered != info.event.extendedProps.qd) {
+								if(info.el.getElementsByClassName('fc-title')[0]) info.el.getElementsByClassName('fc-title')[0].innerHTML = '<small>'+info.event.extendedProps.borrowTime[0]+'</small> '+info.el.getElementsByClassName('fc-title')[0].innerHTML;
+								if(info.el.getElementsByClassName('fc-list-item-title')[0]) info.el.getElementsByClassName('fc-list-item-title')[0].innerHTML = '<small>'+info.event.extendedProps.borrowTime[0]+'</small> '+info.el.getElementsByClassName('fc-list-item-title')[0].innerHTML;
+								
+							}
+						}
+						hasRendered = info.event.extendedProps.qd;
+						color = [];
+						if (info.event.end < today) color = ['lightgray','transparent'];
+						else if(info.event.title == '課外組') color = ['#575fcf','#575fcf'];
+						if(color.length == 2) {
+							if(info.el.classList.contains('fc-day-grid-event')) {
+								info.el.style.backgroundColor = color[0];
+								info.el.style.borderColor = color[0];
+							} else if (info.el.getElementsByClassName('fc-event-dot')[0]) {
+								info.el.getElementsByClassName('fc-event-dot')[0].style.backgroundColor = color[1];
+							}
+						}
+					},
+					eventSourceSuccess: function(content, xhr) {
+						document.getElementById('loading').style.display = 'none';
+					}
+				});
+				calendar.render();
 			});
-			calendar.render();
+			xhr.open('GET', 'https://lab.henrywu.tw/borrow/api.php?ver=2');
+			xhr.send();
 		});
 	</script>
 	<style>
@@ -125,6 +208,11 @@
 		#event_detail:target {
 			outline: none;
 			display: block;
+		}
+
+		.input-time {
+			width: 50px;
+			font-family: monospace;
 		}
 	</style>
 </head>
