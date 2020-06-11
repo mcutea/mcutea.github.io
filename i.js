@@ -27,12 +27,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			var id;
 			for(var i = 2; i <= eqipTable.length; i++) {
 				id = document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[0].innerText.trim();
+				id2 = document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[1].innerText.trim();
 				if(imgList[id] != undefined) document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].setAttribute('onclick','showimg("'+id+'")');
 				else {
 					document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].removeAttribute('onclick')
 					document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].removeAttribute('style')
 				}
-				if(id == 'hide') document.querySelectorAll('span[name=table1] tr:nth-child('+i+')')[0].style.display = 'none';
+				if(id == 'hide' || id2 == 'hide') document.querySelectorAll('span[name=table1] tr:nth-child('+i+')')[0].style.display = 'none';
 			}
 		}
 		if(document.querySelectorAll('input')[0].value == '個人借用紀錄') {
