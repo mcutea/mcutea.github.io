@@ -45,5 +45,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				if(id == 'zhide') document.querySelectorAll('span[name=table1] tr:nth-child('+i+')')[0].style.display = 'none';
 			}
 		}
+		if(document.querySelectorAll('input')[0].value == '課外組管理員') {
+			eqipTable = document.querySelectorAll('span[name=table1] tr');
+			var id;
+			for(var i = 2; i <= eqipTable.length; i++) {
+				id = document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[1].innerText.trim();
+				id2 = document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[2].innerText.trim();
+				if(id == 'zhide' || id2 == 'zhide') document.querySelectorAll('span[name=table1] tr:nth-child('+i+')')[0].style.display = 'none';
+			}
+		}
 	}
 });
