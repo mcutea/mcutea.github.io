@@ -34,5 +34,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				}
 			}
 		}
+		if(document.querySelectorAll('input')[0].value == '個人借用紀錄') {
+			if(document.querySelectorAll('input')[18].value == '') document.querySelectorAll('button')[2].remove()
+		}
 	}
 });
