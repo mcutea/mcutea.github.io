@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			}
 		}
 		if(document.querySelectorAll('input')[0].value == '個人借用紀錄') {
+			document.querySelectorAll('button')[0].style.display = 'none';
 			if(document.querySelectorAll('input')[18].value == '') document.querySelectorAll('button')[2].style.display = 'none';
 			eqipTable = document.querySelectorAll('span[name=table1] tr');
 			var id;
