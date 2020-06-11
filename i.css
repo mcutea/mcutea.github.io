@@ -1,5 +1,5 @@
 @media print{
-	.menu, div[name=banner],
+	/*.menu, div[name=banner],
 	#text3,
 	#text4,
 	#text5,
@@ -14,5 +14,5 @@
 	span[name=button9],
 	span[name=button10] {
 		display: none
-	}
+	}*/
 }
