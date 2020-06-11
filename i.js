@@ -53,6 +53,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				id2 = document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[2].innerText.trim();
 				if(id == 'zhide' || id2 == 'zhide') document.querySelectorAll('span[name=table1] tr:nth-child('+i+')')[0].style.display = 'none';
 			}
+			eqipTable2 = document.querySelectorAll('span[name=table2] tr');
+			for(var i = 2; i <= eqipTable.length; i++) {
+				id = document.querySelectorAll('span[name=table2] tr:nth-child('+i+') td')[1].innerText.trim();
+				id2 = document.querySelectorAll('span[name=table2] tr:nth-child('+i+') td')[2].innerText.trim();
+				if(id == 'zhide' || id2 == 'zhide') document.querySelectorAll('span[name=table2] tr:nth-child('+i+')')[0].style.display = 'none';
+			}
 		}
 	}
 });
