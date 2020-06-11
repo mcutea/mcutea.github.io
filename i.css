@@ -1,0 +1,12 @@
+@media print{
+	.menu, div[name=banner],
+	#text8,
+	#text9,
+	button[name=button1],
+	span[name=field1_caption],
+	span[name=button2],
+	span[name=button9],
+	span[name=button10] {
+		display: none
+	}
+}
