@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 					document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].removeAttribute('onclick')
 					document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td:nth-child(3) span')[0].removeAttribute('style')
 				}
+				if(id == 'hide') document.querySelectorAll('span[name=table1] tr:nth-child('+i+')').style.display = 'none';
 			}
 		}
 		if(document.querySelectorAll('input')[0].value == '個人借用紀錄') {
