@@ -17,6 +17,8 @@ var showimg = function(id) {
 document.addEventListener("DOMContentLoaded", function(event) {
 	if(typeof loaded == "undefined") {
 		if(document.querySelectorAll('input')[0].value == '器材借用申請') {
+			document.querySelectorAll('#field6')[0].setAttribute('maxlength',8);
+			document.querySelectorAll('#field7')[0].setAttribute('maxlength',8);
 			document.querySelectorAll('#field8')[0].setAttribute('placeholder','請填寫活動場地');
 			loaded = true;
 			location.href = '#!';
