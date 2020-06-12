@@ -36,6 +36,16 @@
 		left: 0;
 		height: 100%;
 	}
+
+	@media print {
+		#print {
+			display: block;
+		}
+
+		span[name=table1] {
+			display: none
+		}
+	}
 </style>
 <div id="print">
 	<h1 style="text-align:center;font-size:22px">明志科技大學課外活動組器材借用單</h1>
