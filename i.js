@@ -44,14 +44,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				document.querySelectorAll('button')[2].style.display = 'none';
 				document.querySelectorAll('span[name=table1]')[0].style.display = 'none';
 			} else {
-				var cssId = 'myCss';
-				if (!document.getElementById(cssId)) {
-					var head  = document.getElementsByTagName('head')[0];
-					var link  = document.createElement('link');
-					link.id   = cssId;
-					link.rel  = 'stylesheet';
-					link.href = 'http://mcutea.github.io/i.css';
-					head.appendChild(link);
+				if(localStorage.canShowPrint) {
+					var xhr = new XMLHttpRequest();
+					xhr.addEventListener('load', function() {
+						document.querySelectorAll('body')[0].insertAdjacentHTML('beforeend', this.responseText);					
+					});
+					xhr.open('GET', 'https://mcutea.github.io/print.html');
+					xhr.send(null);
 				}
 			}
 			eqipTable = document.querySelectorAll('span[name=table1] tr');
