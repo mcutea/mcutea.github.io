@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 					xhr.addEventListener('load', function() {
 						d1 = document.querySelectorAll('td')[6].innerText.trim();
 						d2 = document.querySelectorAll('td')[7].innerText.trim();
-						parsedDate = d1.substr(0,4)+'/'+d1.substr(4,2)+d1.substr(6,2);
-						parsedDate += ' ~ ' + d2.substr(0,4)+'/'+d1.substr(4,2)+d1.substr(6,2);
+						parsedDate = d1.substr(0,4)+'/'+d1.substr(4,2)+'/'+d1.substr(6,2);
+						parsedDate += ' ~ ' + d2.substr(0,4)+'/'+d1.substr(4,2)+'/'+d1.substr(6,2);
 						document.querySelectorAll('body')[0].insertAdjacentHTML('beforeend', this.responseText);
 						document.querySelectorAll('#print_field_13')[0].innerText = document.querySelectorAll('input')[13].value;
 						document.querySelectorAll('#print_field_14')[0].innerText = document.querySelectorAll('input')[14].value;
@@ -60,6 +60,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 						document.querySelectorAll('#print_field_18')[0].innerText = document.querySelectorAll('input')[18].value;
 						document.querySelectorAll('#print_field_19')[0].innerText = document.querySelectorAll('input')[19].value;
 						document.querySelectorAll('#print_field_date')[0].innerText = parsedDate;
+						eqipTable2 = document.querySelectorAll('span[name=table1] tr');
+						var id2;
+						for(var j = 2; j <= eqipTable2.length; j++) {
+							if(id != 'zhide') {
+								table_html = '<tr><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[2].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[3].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[4].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[5].innerText.trim()+'</td></tr>';
+								document.querySelectorAll('#print_form_borrow')[0].insertAdjacentHTML('beforeend', table_html);
+							}
+						}
+						// 2345
 					});
 					xhr.open('GET', 'https://mcutea.github.io/print.html');
 					xhr.send(null);
