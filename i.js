@@ -62,14 +62,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 						document.querySelectorAll('#print_field_date')[0].innerText = parsedDate;
 						eqipTable2 = document.querySelectorAll('span[name=table1] tr');
 						for(var j = 2; j <= eqipTable2.length; j++) {
-							console.log(j);
-							if(document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[0] != 'zhide') {
+							if(document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[0].innerText.trim() != 'zhide') {
 								table_html = '<tr><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[2].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[3].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[4].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[5].innerText.trim()+'</td></tr>';
-								console.log(table_html);
 								document.querySelectorAll('#print_form_borrow tbody')[0].insertAdjacentHTML('beforeend', table_html);
 							}
 						}
-						// 2345
 					});
 					xhr.open('GET', 'https://mcutea.github.io/print.html');
 					xhr.send(null);
