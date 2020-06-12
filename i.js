@@ -52,6 +52,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 					xhr.open('GET', 'https://mcutea.github.io/print.html');
 					xhr.send(null);
 				}
+				document.querySelectorAll('#print_field_13')[0] = document.querySelectorAll('input')[13].value;
+				document.querySelectorAll('#print_field_14')[0] = document.querySelectorAll('input')[14].value;
+				document.querySelectorAll('#print_field_15')[0] = document.querySelectorAll('input')[15].value;
+				document.querySelectorAll('#print_field_16')[0] = document.querySelectorAll('input')[16].value;
+				document.querySelectorAll('#print_field_17')[0] = document.querySelectorAll('input')[17].value;
+				document.querySelectorAll('#print_field_18')[0] = document.querySelectorAll('input')[18].value;
+				document.querySelectorAll('#print_field_19')[0] = document.querySelectorAll('input')[19].value;
+				document.querySelectorAll('#print_field_time')[0] = document.querySelectorAll('td')[6].innerText.trim() + '~' + document.querySelectorAll('td')[7].innerText.trim();
 			}
 			eqipTable = document.querySelectorAll('span[name=table1] tr');
 			var id;
