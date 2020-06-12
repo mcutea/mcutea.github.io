@@ -61,9 +61,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 						document.querySelectorAll('#print_field_19')[0].innerText = document.querySelectorAll('input')[19].value;
 						document.querySelectorAll('#print_field_date')[0].innerText = parsedDate;
 						eqipTable2 = document.querySelectorAll('span[name=table1] tr');
-						var id2;
 						for(var j = 2; j <= eqipTable2.length; j++) {
-							if(id != 'zhide') {
+							if(document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[1] != 'zhide') {
 								table_html = '<tr><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[2].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[3].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[4].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+i+') td')[5].innerText.trim()+'</td></tr>';
 								document.querySelectorAll('#print_form_borrow')[0].insertAdjacentHTML('beforeend', table_html);
 							}
