@@ -12,7 +12,8 @@
 	span[name=field1_caption],
 	span[name=button2],
 	span[name=button9],
-	span[name=button10] {
+	span[name=button10],
+	.line {
 		display: none
 	}*/
 }
