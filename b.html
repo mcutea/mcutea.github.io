@@ -113,7 +113,7 @@
 
 						if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 5 && d2.getMonth() == 5 && d2.getDate() == 6) add = '音柱 * 2<br>EV * 4<br>Qu-32 * 1<br>導播機 * 1<br>電視 * 1';
 						
-						text += '<p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>')+add+'</p>';
+						text += '<p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>').replace(/- \* 1<br>/g,'')+add+'</p>';
 						location.href = '#event_detail';
 						document.getElementById('event_detail_data').innerHTML = text;
 						if(localStorage.editToken && d2 >= today) {
