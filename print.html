@@ -12,8 +12,8 @@
 		font-size: 16px
 	}
 
-	#print #form_borrow td,
-	#print #form_borrow th {
+	#print #print_form_borrow td,
+	#print #print_form_borrow th {
 		width: auto;
 		text-align: center;
 		line-height: 1.6em;
@@ -42,14 +42,14 @@
 			display: block;
 		}
 
-		span[name=table1] {
+		#form_body {
 			display: none
 		}
 	}
 </style>
 <div id="print">
 	<h1 style="text-align:center;font-size:22px">明志科技大學課外活動組器材借用單</h1>
-	<table id="form_info" style="width:100%;border-collapse:collapse;border:2px solid #000" border="1">
+	<table id="print_form_info" style="width:100%;border-collapse:collapse;border:2px solid #000" border="1">
 		<tr>
 			<td class="title">借用單位</td>
 			<td></td>
@@ -75,7 +75,7 @@
 			<td colspan="5"></td>
 		</tr>
 	</table>
-	<table id="form_borrow" style="width:100%;border-collapse:collapse;border:2px solid #000;border-top:0" border="1">
+	<table id="print_form_borrow" style="width:100%;border-collapse:collapse;border:2px solid #000;border-top:0" border="1">
 		<tr>
 			<th style="width:9em">類別</th>
 			<th>器材</th>
