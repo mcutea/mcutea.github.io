@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 						eqipTable2 = document.querySelectorAll('span[name=table1] tr');
 						for(var j = 2; j <= eqipTable2.length; j++) {
 							if(document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[1].innerText.trim() != 'zhide') {
-								table_html = '<tr><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[2].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[3].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[4].innerText.trim()+'</td><tdtext-align:right">'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[5].innerText.trim()+'</td></tr>';
+								table_html = '<tr><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[2].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[3].innerText.trim()+'</td><td>'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[4].innerText.trim()+'</td><td text-align:right">'+document.querySelectorAll('span[name=table1] tr:nth-child('+j+') td')[5].innerText.trim()+'</td></tr>';
 								document.querySelectorAll('#print_form_borrow tbody')[0].insertAdjacentHTML('beforeend', table_html);
 							}
 						}
