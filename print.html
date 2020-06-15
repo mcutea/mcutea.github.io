@@ -31,11 +31,7 @@
 		display: none;
 		z-index: 100000;
 		background: #FFF;
-		position: fixed;
 		width: 100%;
-		top: 0;
-		left: 0;
-		height: 100%;
 	}
 
 	@media print {
@@ -44,7 +40,9 @@
 			overflow-x: scroll
 		}
 
-		#form_body {
+		#form_body,
+		div[name=banner],
+		.menu {
 			display: none
 		}
 	}
