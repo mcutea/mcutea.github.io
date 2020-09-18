@@ -111,7 +111,7 @@
 							text += '<input type="hidden" value="'+info.event.extendedProps.qd+'" id="qd">';
 						}
 
-						if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 5 && d2.getMonth() == 5 && d2.getDate() == 6) add = '音柱 * 2<br>EV * 4<br>Qu-32 * 1<br>導播機 * 1<br>電視 * 1';
+						//if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 5 && d2.getMonth() == 5 && d2.getDate() == 6) add = '音柱 * 2<br>EV * 4<br>Qu-32 * 1<br>導播機 * 1<br>電視 * 1';
 						
 						text += '<p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>').replace(/- \* 1<br>/g,'')+add+'</p>';
 						location.href = '#event_detail';
@@ -139,8 +139,9 @@
 						}
 						hasRendered = info.event.extendedProps.qd;
 						color = [];
-						if (info.event.end < today) color = ['lightgray','transparent'];
-						else if(info.event.title == '課外組') color = ['#575fcf','#575fcf'];
+						if (info.event.end < today) color = ['#7f8c8d','transparent'];
+						else if(info.event.title == '課外組') color = ['#2c3e50','#2c3e50'];
+						else color = ['#34495e','#34495e'];
 						if(color.length == 2) {
 							if(info.el.classList.contains('fc-day-grid-event')) {
 								info.el.style.backgroundColor = color[0];
