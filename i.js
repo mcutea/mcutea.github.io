@@ -23,14 +23,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			loaded = true;
 			location.href = '#!';
 			document.querySelectorAll('body')[0].insertAdjacentHTML('beforeend', '<style>#eqipimage{display:none;background:#FFF;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;text-align:center}#eqipimage:target{display:block}#eqipimage img{max-width:70%!important;max-height:70%!important;margin-top:5%}</style><div id="eqipimage"><a href="#!" id="close" style="font-size:40px;cursor:pointer;position:fixed;right:10px;top:0;text-decoration:none;color:black">&times;</a><img></div>');
-			if(document.querySelectorAll('#field1')[0].value == 'clubadmin') {
-				var sel = document.querySelectorAll('select[name=field2]')[0];
-				var opts = sel.options;
-				for (var opt, j = 0; opt = opts[j]; j++) {
-					if (opt.value == '課外活動組') {
-						sel.selectedIndex = j;
-						break;
-					}
+			var sel = document.querySelectorAll('select[name=field2]')[0];
+			var opts = sel.options;
+			for (var opt, j = 0; opt = opts[j]; j++) {
+				if (opt.value == '課外活動組') {
+					if(document.querySelectorAll('#field1')[0].value == 'clubadmin') sel.selectedIndex = j;
+					else opt.remove();
+					break;
 				}
 			}
 			eqipTable = document.querySelectorAll('span[name=table1] tr');
