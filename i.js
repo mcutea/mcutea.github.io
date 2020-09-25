@@ -9,8 +9,8 @@ var showimg = function(id) {
 	imgele.src = 'https://i.imgur.com/'+imgList[id];
 	img.onload = function() {
 		outele = document.querySelectorAll('#eqipimage')[0];
-		if(this.height < this.width) imgele.width = outele.offsetWidth*0.8;
-		else imgele.height = outele.offsetHeight*0.8;
+		if(this.height < this.width) imgele.width = outele.offsetWidth*0.7;
+		else imgele.height = outele.offsetHeight*0.7;
 	}
 	img.src = 'https://i.imgur.com/'+imgList[id];
 }
