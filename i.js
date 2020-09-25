@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			document.querySelectorAll('#field8')[0].setAttribute('placeholder','請填寫活動場地');
 			loaded = true;
 			location.href = '#!';
-			document.querySelectorAll('body')[0].insertAdjacentHTML('beforeend', '<style>#eqipimage{display:none;background:#FFF;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;text-align:center}#eqipimage:target{display:block}#eqipimage img{margin-top:10%;width:80%;height:80%;object-fit:contain;}</style><div id="eqipimage"><a href="#!" id="close" style="font-size:40px;cursor:pointer;position:fixed;right:10px;top:0;text-decoration:none;color:black">&times;</a><img></div>');
+			document.querySelectorAll('body')[0].insertAdjacentHTML('beforeend', '<style>#eqipimage{display:none;background:#FFF;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;text-align:center}#eqipimage:target{display:block}#eqipimage img{margin-top:10vh;width:70vh;height:70vh;object-fit:contain;}</style><div id="eqipimage"><a href="#!" id="close" style="font-size:40px;cursor:pointer;position:fixed;right:10px;top:0;text-decoration:none;color:black">&times;</a><img></div>');
 			var sel = document.querySelectorAll('select[name=field2]')[0];
 			var opts = sel.options;
 			for (var opt, j = 0; opt = opts[j]; j++) {
