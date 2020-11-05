@@ -48,7 +48,7 @@
 			var today = new Date();
 			var d = new Date();
 			document.getElementById('show').addEventListener('click', function() {
-				data = document.getElementById('json').value;
+				data = JSON.parse(document.getElementById('json').value);
 				time = [];
 				maxEndDate = new Date();
 				for (var i=0; i < data.length; i++) {
