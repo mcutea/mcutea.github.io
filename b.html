@@ -49,19 +49,8 @@
 			var d = new Date();
 			var xhr = new XMLHttpRequest();
 			xhr.addEventListener('load', function() {
-				data = JSON.parse(this.responseText).events;
-				time = JSON.parse(this.responseText).time;
+				data = JSON.parse(this.responseText);
 				maxEndDate = new Date();
-				for (var i=0; i < data.length; i++) {
-					if(new Date(data[i].end) > maxEndDate) maxEndDate = new Date(data[i].end);
-					data[i].qd = data[i].title+'_'+data[i].start+'_'+(data[i].end).split(' ')[0];
-					if(time[data[i].qd]) {
-						timeData = time[data[i].qd];
-						data[i].start = data[i].start + ' ' + timeData[0];
-						data[i].end = (data[i].end).split(' ')[0] + ' ' + timeData[1];
-						data[i].borrowTime = timeData;
-					}
-				}
 				var DayofMaxEndDate = [31,28,31,30,31,30,31,31,30,31,30,31];
 				var hasRendered = [];
 				maxEndDateYear = maxEndDate.getFullYear();
