@@ -18,32 +18,12 @@
 	<script src="inc/borrow_calendar_packages/list/main.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 	<script>
-		var regex_time = /(\d{2}):(\d{2})/;
-		function updateTime() {
-			if(
-				document.getElementById('startTime').value == '' ||
-				document.getElementById('endTime').value == '' ||
-				!regex_time.test(document.getElementById('startTime').value) ||
-				!regex_time.test(document.getElementById('endTime').value)
-			) return alert('請填寫借用及歸還時間。');
-			document.getElementById('send').setAttribute('disabled', 'disabled');
-			var xhr2 = new XMLHttpRequest();
-			xhr2.addEventListener('load', function() {
-				if(this.responseText == 'token_err') alert('Token Error');
-				else alert('儲存成功！\n（重新整理後生效）')
-				document.getElementById('send').removeAttribute('disabled');
-			});
-			xhr2.open('POST', 'https://lab.henrywu.tw/borrow/updateTime.php');
-			xhr2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhr2.send('start='+document.getElementById('startTime').value+'&end='+document.getElementById('endTime').value+'&qd='+document.getElementById('qd').value+'&token='+localStorage.editToken);
-		}
 		document.addEventListener('DOMContentLoaded', function() {
 			location.href = '#!';
 			function pad($t) {
 				if($t < 10) return '0'+$t;
 				return $t;
 			}
-
 			var calendarEl = document.getElementById('calendar');
 			var today = new Date();
 			var d = new Date();
@@ -51,6 +31,10 @@
 			xhr.addEventListener('load', function() {
 				data = JSON.parse(this.responseText);
 				maxEndDate = new Date();
+				for (var i=0; i < data.length; i++) {
+					if(new Date(data[i].end) > maxEndDate) maxEndDate = new Date(data[i].end);
+					data[i].qd = data[i].title+'_'+data[i].start+'_'+(data[i].end).split(' ')[0];
+				}
 				var DayofMaxEndDate = [31,28,31,30,31,30,31,31,30,31,30,31];
 				var hasRendered = [];
 				maxEndDateYear = maxEndDate.getFullYear();
