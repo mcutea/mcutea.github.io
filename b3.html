@@ -26,7 +26,14 @@
 			var d = new Date();
 			var xhr = new XMLHttpRequest();
 			xhr.addEventListener('load', function() {
-				data = JSON.parse(this.responseText).data;
+				data_o = JSON.parse(this.responseText).data;
+				for(i=0;i<data_o.length;i++) {
+					data.push({
+						"start": data_o[i][3],
+						"end": data_o[i][4]+' 23:59:59',
+						"title": data_o[i][0] + ' - ' + data_o[i][5]
+					})
+				}
 				maxEndDate = new Date();
 				for (var i=0; i < data.length; i++) {
 					if(new Date(data[i].end) > maxEndDate) maxEndDate = new Date(data[i].end);
