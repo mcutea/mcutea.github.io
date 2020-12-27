@@ -1,0 +1,210 @@
+<title>明志科大課外組器材借用行事曆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link href="inc/borrow_calendar_packages/core/main.css" rel="stylesheet" />
+	<link href="inc/borrow_calendar_packages/daygrid/main.css" rel="stylesheet" />
+	<link href="inc/borrow_calendar_packages/timegrid/main.css" rel="stylesheet" />
+	<link href="inc/borrow_calendar_packages/list/main.css" rel="stylesheet" />
+	<script src="inc/borrow_calendar_packages/core/main.js"></script>
+	<script src="inc/borrow_calendar_packages/interaction/main.js"></script>
+	<script src="inc/borrow_calendar_packages/daygrid/main.js"></script>
+	<script src="inc/borrow_calendar_packages/timegrid/main.js"></script>
+	<script src="inc/borrow_calendar_packages/list/main.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			location.href = '#!';
+			function pad($t) {
+				if($t < 10) return '0'+$t;
+				return $t;
+			}
+			var calendarEl = document.getElementById('calendar');
+			var today = new Date();
+			var d = new Date();
+			var xhr = new XMLHttpRequest();
+			xhr.addEventListener('load', function() {
+				data = JSON.parse(this.responseText).data;
+				maxEndDate = new Date();
+				for (var i=0; i < data.length; i++) {
+					if(new Date(data[i].end) > maxEndDate) maxEndDate = new Date(data[i].end);
+					data[i].qd = data[i].title+'_'+data[i].start+'_'+(data[i].end).split(' ')[0];
+				}
+				var DayofMaxEndDate = [31,28,31,30,31,30,31,31,30,31,30,31];
+				var hasRendered = [];
+				maxEndDateYear = maxEndDate.getFullYear();
+				if((maxEndDateYear%4===0&&maxEndDateYear%100!==0||maxEndDateYear%400===0)) DayofMaxEndDate[1] = 29;
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+					height: 'parent',
+					header: {
+						left: 'today prev',
+						center: 'title',
+						right: 'next'
+					},
+					noEventsMessage: '本月無人借用器材',
+					buttonText: { today: '本月', month: '月曆', list: '清單'},
+					titleFormat: { month: 'short', year: 'numeric'},
+					defaultView: 'dayGridMonth',
+					navLinks: true,
+					eventLimit: true,
+					eventLimitText: "More",
+					displayEventTime: false,
+					eventTimeFormat: {
+						hour: 'numeric',
+						minute: '2-digit',
+						hour12: false
+					},
+					listDayFormat: {month: 'numeric', day: 'numeric'},
+					listDayAltFormat: {weekday: 'short'},
+					events: data,
+					fixedWeekCount: false,
+					validRange: {
+						start: d.getFullYear() +'-'+ pad(d.getMonth()+1) +'-01',
+						end: maxEndDate.getFullYear() +'-'+ pad(maxEndDate.getMonth()+1) +'-'+ DayofMaxEndDate[maxEndDate.getMonth()] + ' 23:59'
+					},
+					eventClick: function(info) {
+						d1 = info.event.start;
+						d2 = info.event.end;
+						add = '';
+						if(info.event.extendedProps.borrowTime) {
+							text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate() +' '+info.event.extendedProps.borrowTime[0] + ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate() + ' '+ info.event.extendedProps.borrowTime[1];
+						} else {
+							text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate();
+							if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate();
+						}
+
+						text += '</h2>';
+
+						if(localStorage.editToken && d2 >= today) {
+						//	if(info.event.extendedProps.borrowTime) text += '<div style="background:#EEE;padding:10px 15px;margin:10px 0;border-radius:5px;display:inline-block;">預計於 ' + (d1.getMonth()+1) + '/' + d1.getDate() + ' <input class="input-time" id="startTime" value="'+info.event.extendedProps.borrowTime[0]+'"> 借出，'+ (d2.getMonth()+1) + '/' + d2.getDate()+' <input class="input-time" id="endTime" value="'+info.event.extendedProps.borrowTime[1]+'"> 歸還　<button id="send" onclick="updateTime()">更新</button></div>';
+						//	else text += '<div style="background:#EEE;padding:10px 15px;margin:10px 0;border-radius:5px;display:inline-block;">預計於 ' + (d1.getMonth()+1) + '/' + d1.getDate() + ' <input class="input-time" id="startTime"> 借出，'+ (d2.getMonth()+1) + '/' + d2.getDate()+' <input class="input-time" id="endTime"> 歸還　<button id="send" onclick="updateTime()">送出</button></div>';
+						//	text += '<input type="hidden" value="'+info.event.extendedProps.qd+'" id="qd">';
+						}
+
+						//if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 5 && d2.getMonth() == 5 && d2.getDate() == 6) add = '音柱 * 2<br>EV * 4<br>Qu-32 * 1<br>導播機 * 1<br>電視 * 1';
+						
+						text += '<p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>').replace(/- \* 1<br>/g,'').replace(/\[N\]\s/g,'')+add+'</p>';
+						location.href = '#event_detail';
+						document.getElementById('event_detail_data').innerHTML = text;
+						if(localStorage.editToken && d2 >= today) {
+							var cleave = new Cleave('#startTime', {
+								time: true,
+								timePattern: ['h', 'm']
+							});
+							var cleave = new Cleave('#endTime', {
+								time: true,
+								timePattern: ['h', 'm']
+							});
+						}
+					},
+					navLinks: false,
+					eventRender: function(info) {
+						console.log()
+						if(info.event.extendedProps.borrowTime) {
+							if(hasRendered != info.event.extendedProps.qd) {
+								if(info.el.getElementsByClassName('fc-title')[0]) info.el.getElementsByClassName('fc-title')[0].innerHTML = '<small>'+info.event.extendedProps.borrowTime[0]+'</small> '+info.el.getElementsByClassName('fc-title')[0].innerHTML;
+								if(info.el.getElementsByClassName('fc-list-item-title')[0]) info.el.getElementsByClassName('fc-list-item-title')[0].innerHTML = '<small>'+info.event.extendedProps.borrowTime[0]+'</small> '+info.el.getElementsByClassName('fc-list-item-title')[0].innerHTML;
+								
+							}
+						}
+						hasRendered = info.event.extendedProps.qd;
+						color = [];
+						if (info.event.end < today) color = ['#95a5a6','transparent'];
+						else if(info.event.title == '課外組') color = ['#130f40','#130f40'];
+						else color = ['#34495e','#34495e'];
+						if(color.length == 2) {
+							if(info.el.classList.contains('fc-day-grid-event')) {
+								info.el.style.backgroundColor = color[0];
+								info.el.style.borderColor = color[0];
+							} else if (info.el.getElementsByClassName('fc-event-dot')[0]) {
+								info.el.getElementsByClassName('fc-event-dot')[0].style.backgroundColor = color[1];
+							}
+						}
+					},
+					eventSourceSuccess: function(content, xhr) {
+						document.getElementById('loading').style.display = 'none';
+					}
+				});
+				calendar.render();
+			});
+			xhr.open('GET', 'https://test.henrywu.tw/test/borrow.php?get');
+			xhr.send();
+		});
+	</script>
+	<style>
+		html, body {
+			overflow: hidden;
+			font-family:"SF Pro TC","SF Pro Text","SF Pro Icons","PingFang TC","Helvetica Neue","Helvetica","Arial","Microsoft JhengHei",wf_SegoeUI,"Segoe UI",Segoe,"Segoe WP",Tahoma,Verdana,Ubuntu,"Bitstream Vera Sans","DejaVu Sans",Tahoma,微軟正黑體,"LiHei Pro","WenQuanYi Micro Hei","Droid Sans Fallback","AR PL UMing TW",Roboto,"Helvetica Neue","Hiragino Maru Gothic ProN",メイリオ,"ヒラギノ丸ゴ ProN W4",Meiryo,"Droid Sans",sans-serif;
+			font-size: 14px;
+		}
+
+		#calendar-container {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+
+		.fc-header-toolbar {
+			padding-top: 1em;
+			padding-left: 1em;
+			padding-right: 1em;
+		}
+
+		.fc-toolbar h2 {
+			font-size: 1.5em;
+		}
+
+		.fc-button {
+			padding: 0.3em 0.4em;
+		}
+
+		.fc-toolbar.fc-header-toolbar {
+			margin-bottom: 1em
+		}
+
+		.fc-ltr .fc-list-item-marker {
+			padding-top: 11px !important
+		}
+
+		.fc-list-item:hover {
+			cursor: pointer;
+		}
+
+		#event_detail {
+			display: none
+		}
+
+		#event_detail:target {
+			outline: none;
+			display: block;
+		}
+
+		.input-time {
+			width: 50px;
+			font-family: monospace;
+		}
+		
+		.fc-event-container {
+			cursor: pointer
+		}
+	</style>
+</head>
+<body>
+	<div id="loading" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:11000;background:#FFF">
+		<div style="text-align:center;font-size:30px;margin-top:42vh">Loading...</div>
+	</div>
+	<div id="event_detail" style="position:fixed;top:0;left:0;width:100%;height:100%;overflow:scroll;box-sizing:border-box;padding:10px;z-index:10000;background:#FFF">
+		<br><br>
+		<a href="#!" id="close" style="font-size:40px;cursor:pointer;position:fixed;right:30px;top:0;text-decoration:none;color:black">&times;</a>
+		<div id="event_detail_data" style="margin:0 auto;width:90%;max-width:500px"></div>
+	</div>
+	<div id="calendar-container">
+		<div id="calendar"></div>
+	</div>
+</body>
+</html>
