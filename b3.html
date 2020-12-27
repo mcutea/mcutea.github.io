@@ -27,6 +27,7 @@
 			var xhr = new XMLHttpRequest();
 			xhr.addEventListener('load', function() {
 				data_o = JSON.parse(this.responseText).data;
+				data = [];
 				for(i=0;i<data_o.length;i++) {
 					data.push({
 						"start": data_o[i][3],
