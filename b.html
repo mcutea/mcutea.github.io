@@ -26,7 +26,16 @@
 			var d = new Date();
 			var xhr = new XMLHttpRequest();
 			xhr.addEventListener('load', function() {
-				data = JSON.parse(this.responseText);
+				data_o = JSON.parse(this.responseText).data;
+				data = [];
+				for(i=0;i<data_o.length;i++) {
+					data.push({
+						"start": data_o[i][3],
+						"end": data_o[i][4]+' 23:59:59',
+						"title": data_o[i][0] + ' - ' + data_o[i][5],
+						"list": data_o[i][7]
+					})
+				}
 				maxEndDate = new Date();
 				for (var i=0; i < data.length; i++) {
 					if(new Date(data[i].end) > maxEndDate) maxEndDate = new Date(data[i].end);
@@ -77,16 +86,12 @@
 						}
 
 						text += '</h2>';
-
-						if(localStorage.editToken && d2 >= today) {
-						//	if(info.event.extendedProps.borrowTime) text += '<div style="background:#EEE;padding:10px 15px;margin:10px 0;border-radius:5px;display:inline-block;">預計於 ' + (d1.getMonth()+1) + '/' + d1.getDate() + ' <input class="input-time" id="startTime" value="'+info.event.extendedProps.borrowTime[0]+'"> 借出，'+ (d2.getMonth()+1) + '/' + d2.getDate()+' <input class="input-time" id="endTime" value="'+info.event.extendedProps.borrowTime[1]+'"> 歸還　<button id="send" onclick="updateTime()">更新</button></div>';
-						//	else text += '<div style="background:#EEE;padding:10px 15px;margin:10px 0;border-radius:5px;display:inline-block;">預計於 ' + (d1.getMonth()+1) + '/' + d1.getDate() + ' <input class="input-time" id="startTime"> 借出，'+ (d2.getMonth()+1) + '/' + d2.getDate()+' <input class="input-time" id="endTime"> 歸還　<button id="send" onclick="updateTime()">送出</button></div>';
-						//	text += '<input type="hidden" value="'+info.event.extendedProps.qd+'" id="qd">';
-						}
-
-						//if(info.event.title == '課外組' && d1.getMonth() == 5 && d1.getDate() == 5 && d2.getMonth() == 5 && d2.getDate() == 6) add = '音柱 * 2<br>EV * 4<br>Qu-32 * 1<br>導播機 * 1<br>電視 * 1';
 						
-						text += '<p style="line-height:20px">' +(info.event.extendedProps.item).replace(/\,/g,'<br>').replace(/- \* 1<br>/g,'').replace(/\[N\]\s/g,'')+add+'</p>';
+						text += '<p style="line-height:20px">';
+						info.event.extendedProps.list.forEach(function(x) {
+							text += x[0] + ' * ' + x[1] + '<br>';
+						});
+						text += '</p>';
 						location.href = '#event_detail';
 						document.getElementById('event_detail_data').innerHTML = text;
 						if(localStorage.editToken && d2 >= today) {
@@ -130,7 +135,7 @@
 				});
 				calendar.render();
 			});
-			xhr.open('GET', 'https://henry.gdsecret.com/?read');
+			xhr.open('GET', 'https://test.henrywu.tw/test/borrow.php?get');
 			xhr.send();
 		});
 	</script>
