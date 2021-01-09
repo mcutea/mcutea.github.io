@@ -27,7 +27,8 @@
 			var xhr = new XMLHttpRequest();
 			xhr.timeout = 5000;
 			xhr.addEventListener('timeout', function() {
-				document.getElementById('loading_text').inner = '載入失敗，請稍後再試。';
+				console.log('Timeout');
+				document.getElementById('loading_text').innerHTML = '載入失敗，請稍後再試。';
 			});
 			xhr.addEventListener('load', function() {
 				data_o = JSON.parse(this.responseText).data;
