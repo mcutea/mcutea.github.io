@@ -80,17 +80,14 @@
 						end: maxEndDate.getFullYear() +'-'+ pad(maxEndDate.getMonth()+1) +'-'+ DayofMaxEndDate[maxEndDate.getMonth()] + ' 23:59'
 					},
 					eventClick: function(info) {
+						weekday = ['日','一','二','三','四','五','六','日'];
 						d1 = info.event.start;
 						d2 = info.event.end;
 						add = '';
-						if(info.event.extendedProps.borrowTime) {
-							text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate() +' '+info.event.extendedProps.borrowTime[0] + ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate() + ' '+ info.event.extendedProps.borrowTime[1];
-						} else {
-							text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate();
-							if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate();
-						}
+						text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate() + weekday[d1.getDay()];
+						if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate() + weekday[d2.getDay()];
 
-						text += '</h2>';
+						text += '</h1>';
 						
 						text += '<p style="line-height:20px">';
 						info.event.extendedProps.list.forEach(function(x) {
@@ -99,16 +96,6 @@
 						text += '</p>';
 						location.href = '#event_detail';
 						document.getElementById('event_detail_data').innerHTML = text;
-						if(localStorage.editToken && d2 >= today) {
-							var cleave = new Cleave('#startTime', {
-								time: true,
-								timePattern: ['h', 'm']
-							});
-							var cleave = new Cleave('#endTime', {
-								time: true,
-								timePattern: ['h', 'm']
-							});
-						}
 					},
 					navLinks: false,
 					eventRender: function(info) {
