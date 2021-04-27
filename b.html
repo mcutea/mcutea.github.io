@@ -84,8 +84,8 @@
 						d1 = info.event.start;
 						d2 = info.event.end;
 						add = '';
-						text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate() + weekday[d1.getDay()];
-						if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate() + weekday[d2.getDay()];
+						text = '<h1 style="margin:0">' + info.event.title + '</h1><h2 style="margin:0">' + (d1.getMonth()+1) + '/' + d1.getDate() + '(' + weekday[d1.getDay()] + ')';
+						if(d1.getMonth() != d2.getMonth() || d1.getDate() != d2.getDate()) text += ' ~ ' + (d2.getMonth()+1) + '/' + d2.getDate() + '(' + weekday[d2.getDay()] + ')';
 
 						text += '</h1>';
 						
