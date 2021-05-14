@@ -15,6 +15,10 @@
 	<script src="inc/borrow_calendar_packages/list/main.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 	<script>
+		document.onkeydown = function(evt) {
+			evt = evt || window.event;
+			if (evt.keyCode == 27) location.href = '#!';
+		};
 		document.addEventListener('DOMContentLoaded', function() {
 			location.href = '#!';
 			function pad($t) {
